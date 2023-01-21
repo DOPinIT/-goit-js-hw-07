@@ -3,22 +3,40 @@ import { galleryItems } from './gallery-items.js';
 const div = document.querySelector(".gallery");
 console.log(div);
 
-const ulEl = document.createElement('ul');
-div.appendChild(ulEl)
 
+const images = galleryItems.map(img => `<div class="gallery__item">
+<a class="gallery__link" href="${img.original}">
+  <img
+    class="gallery__image"
+    src="${img.preview}"
+    data-source="${img.original}"
+    alt="${img.description}"
+  />
+</a>
+</div>`).join("")
 
-const liImages = galleryItems.flatMap(img => `<li><a class="gallery__link" href="${img.original}">
-<img
-  class="gallery__image"
-  src="${img.preview}"
-  data-source="${img.original}"
-  alt="${img.description}"
-/>
-</a>width = "400"></img></li>`).join("");
-console.log(liImages);
+div.insertAdjacentHTML("beforeend", images);
 
-ulEl.insertAdjacentHTML("beforeend", liImages)
+div.addEventListener("click", onClickImage)
 
+function onClickImage({target}) {
+  blockStandartActivity(event);
 
+if (target.nodeName !== "IMG") {
+  return
+}
+const instance = basicLightbox.create(`
+    <img src="${target.dataset.source}" width="800" height="600">
+`)
+instance.show()
 
-console.log(galleryItems);
+div.addEventListener("keydown", ({code}) => {
+  if (code === "Escape") {
+    instanse.close();
+  }
+});
+}
+
+function blockStandartActivity(evt) {
+  evt.preventDefault();
+}
