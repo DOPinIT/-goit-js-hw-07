@@ -1,10 +1,11 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 const div = document.querySelector(".gallery");
 console.log(div);
 
-
-const images = galleryItems.map(img => `<div class="gallery__item">
+const images = galleryItems
+  .map(
+    (img) => `<div class="gallery__item">
 <a class="gallery__link" href="${img.original}">
   <img
     class="gallery__image"
@@ -13,28 +14,31 @@ const images = galleryItems.map(img => `<div class="gallery__item">
     alt="${img.description}"
   />
 </a>
-</div>`).join("")
+</div>`
+  )
+  .join("");
 
 div.insertAdjacentHTML("beforeend", images);
 
-div.addEventListener("click", onClickImage)
+div.addEventListener("click", onClickImage);
 
-function onClickImage({target}) {
+function onClickImage({ target }) {
   blockStandartActivity(event);
 
-if (target.nodeName !== "IMG") {
-  return
-}
-const instance = basicLightbox.create(`
-    <img src="${target.dataset.source}" width="800" height="600">
-`)
-instance.show()
-
-div.addEventListener("keydown", ({code}) => {
-  if (code === "Escape") {
-    instanse.close();
+  if (target.nodeName !== "IMG") {
+    return;
   }
-});
+  const instance = basicLightbox.create(`
+    <img src="${target.dataset.source}" width="800" height="600">
+`);
+  instance.show();
+
+  div.addEventListener("keydown", ({ code }) => {
+    if (code === "Escape") {
+      instance.close();
+      console.log(code);
+    }
+  });
 }
 
 function blockStandartActivity(evt) {
